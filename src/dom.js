@@ -52,7 +52,7 @@ window.dom = {
     return array;
   },
   // 修改元素或查找title
-  attract(node, name, value) {
+  attr(node, name, value) {
     if (arguments.length === 3) {
       node.setAttribute(name, value);
     } else {
@@ -130,5 +130,51 @@ window.dom = {
   // 查找节点
   find(selector, scope) {
     return (scope || document).querySelectorAll(selector);
+  },
+  //查找父节点
+  parent(node) {
+    return node.parentNode;
+  },
+  //查找子节点
+  children(node) {
+    return node.children;
+  },
+  //查找兄弟节点
+  siblings(node) {
+    Array.from(node.parentNode.children).filter((n) => n !== node);
+  },
+  //查找下一节点
+  next(node) {
+    let x = node.nextSibling;
+    while (x.nodeType === 3) {
+      x = x.nextSibling;
+    }
+    return x;
+  },
+  //查找上一个节点
+  previous(node) {
+    let x = node.previousSibling;
+    while (x.nodeType === 3) {
+      x = x.previousSibling;
+    }
+    return x;
+  },
+  //遍历节点
+  each(nodeList, fn) {
+    for (let i = 0; i < nodeList.length; i++) {
+      fn.call(null, nodeList[i]);
+    }
+  },
+  //
+  //查看节点当前排名
+  index(node) {
+    const list = dom.children(node.parentNode);
+    let i;
+    for (i = 0; i < list.length; i++) {
+      if (list[i] === node) {
+        break;
+      }
+    }
+    return i;
   },
 };
