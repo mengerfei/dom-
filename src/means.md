@@ -32,8 +32,10 @@
 
 ## 事件：
 #### 示例:
-`dom.on('tagName','click',() => {
+```javascript  
+dom.on('tagName','click',() => {
     console.log('点击了')
-})`
+})
+```
 
 

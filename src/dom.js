@@ -2,24 +2,31 @@ window.dom = {
   // 创建节点
   create(string) {
     const container = document.createElement("template");
-    container.innerHTML = string.trim();
-    return container.content.firstChild;
+    container.innerHTML = string.trim(); // trim 作用：把字符串两边的空格去掉
+    return container.content.firstChild; // return container.children[0];
   },
-  // 新增弟弟元素
+  // 新增弟弟元素 即 在当前节点后面插入 新的节点
   after(node, node2) {
+    //原理：找到当前节点的父亲，然后调用父亲的insertBefore方法，接着将node2 插到 node的下一个节点的前面
+
     node.parentNode.insertBefore(node2, node.nextSibling);
   },
-  // 新增哥哥元素
+  // 新增哥哥元素 即 在当前节点前面插入 新的节点
   before(node, node2) {
+    //原理：找到当前节点的父亲，然后调用父亲的insertBefore方法，接着将node2 插到 node节点的前面
     node.parentNode.insertBefore(node2, node);
   },
-  // 新增儿子元素
+  // 新增儿子元素 即 给当前节点 增加 子节点
   append(parent, node) {
     parent.appendChild(node);
+    // Node.appendChild() 方法将一个节点附加到指定父节点的子节点列表的末尾处。如果将被插入的节点已经存在于当前文档的文档树中，那么 appendChild() 只会将它从原先的位置移动到新的位置（不需要事先移除要移动的节点）
   },
-  // 新增爸爸元素
+  // 新增爸爸元素 即 给当前节点 增加 父节点
   wrap(node, parent) {
+    //第一步： 将 parent 放到 node 前面
     dom.before(node, parent);
+    //第二步： 将 parent 移除-----> 将node 放到 parent 里面
+    dom.append(parent, node);
   },
   // 删除节点
   remove(node) {
@@ -97,6 +104,7 @@ window.dom = {
       }
     }
   },
+  // 修改class属性
   class: {
     add(node, className) {
       node.classList.add(className);
@@ -108,6 +116,7 @@ window.dom = {
       return node.classList.contains(className);
     },
   },
+  // 添加事件
   on(
     node, //  节点
     eventName, // 事件名
@@ -118,7 +127,8 @@ window.dom = {
   off(node, eventName, fn) {
     node.removeEventListener(eventName, fn);
   },
-  fin(selector, scope) {
+  // 查找节点
+  find(selector, scope) {
     return (scope || document).querySelectorAll(selector);
   },
 };
